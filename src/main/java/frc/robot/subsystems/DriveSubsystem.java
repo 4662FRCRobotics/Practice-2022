@@ -166,7 +166,7 @@ public void initDriveController(double distance) {
  // SmartDashboard.putNumber("EncoderDistance", encoderDistance);
 }
 
-public void execDriveController(double rotation) {
+public void execDriveController() {
   arcadeDrive(MathUtil.clamp(m_drivePIDController.calculate(getDistance()),-DriveConstants.kDRIVE_PID_LIMIT, DriveConstants.kDRIVE_PID_LIMIT), 0);
  // SmartDashboard.putNumber("GetDistance", getDistance());
 }

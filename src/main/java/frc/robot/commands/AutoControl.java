@@ -31,13 +31,18 @@ public class AutoControl extends CommandBase {
     int m_waitCount;
 
     int m_stepIndex = 0;
-    Step m_step[] = { new Step("Drive", () -> true), new Step("wait", () -> true), new Step("Drive", () -> true), };
+    Step m_step[] = { new Step("Drive", () -> true),
+                     new Step("wait", () -> true),
+                     new Step("Drive", () -> true), };
 
-    public AutoControl() {
+    public AutoControl(DriveSubsystem drive) {
+        m_drive = drive;
+
         m_autoStepCommand = new AutonomousCommands();
 
         m_autoStepCommand.addOption("Drive", new AutoDriveDistance(1, 0, m_drive));
         m_autoStepCommand.addOption("wait", new Wait(1));
+        m_autoStepCommand.addOption("End", new End());
     }
 
     private void dashboardCmd(String cmdName) {
@@ -102,7 +107,9 @@ if (m_currentStepName == "End"){
 
     private String getNextActiveCommand() {
 
-        String returnStepName = "End";
+        System.out.println("gestNextActiveCommand");
+
+        String returnStepName = "";
 
         while (returnStepName == "") {
             m_stepIndex++;
@@ -114,6 +121,7 @@ if (m_currentStepName == "End"){
                 }
             }
         }
+        System.out.println(returnStepName);
         return returnStepName;
     }
 }

@@ -27,7 +27,7 @@ public class AutoDriveDistance extends CommandBase {
   public AutoDriveDistance(DriveSubsystem drive) {
     m_drive = drive;
     m_dDistance = m_drive.getDashboardDistance();
-    m_dRotation = 0;
+    //m_dRotation = 0;
     m_bIsDashboard = true;
     addRequirements(m_drive);
   }
@@ -45,7 +45,7 @@ public class AutoDriveDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.execDriveController(m_dRotation);
+    m_drive.execDriveController();
   }
 
   // Called once the command ends or is interrupted.
