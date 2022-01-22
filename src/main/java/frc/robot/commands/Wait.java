@@ -1,0 +1,9 @@
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
+public class Wait extends WaitCommand{
+  public Wait(double time){
+    super(time);
+  }
+}
