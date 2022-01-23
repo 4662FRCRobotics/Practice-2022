@@ -10,9 +10,9 @@ public class ConsoleJoystick extends Joystick {
 
     private static final int kAXIS_X = 0;
     private static final int kAXIS_THROTTLE = 4;
-  private static final int kAXIS_Y = 1;
+    private static final int kAXIS_Y = 1;
     private static final int kAXIS_TWIST = 3;
-  
+
     private static final int kPOV_SW_0 = 0;
     private static final int kPOV_SW_1 = 1;
 
@@ -21,7 +21,7 @@ public class ConsoleJoystick extends Joystick {
     }
 
     public int getROT_SW_1() {
-        //System.out.println("Get ROT SW 1 " + this.getPOV(kPOV_SW_1)/45);
+        // System.out.println("Get ROT SW 1 " + this.getPOV(kPOV_SW_1)/45);
         return this.getPOV(kPOV_SW_1) / 45;
     }
 

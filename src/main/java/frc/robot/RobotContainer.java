@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
+import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -23,9 +24,9 @@ public class RobotContainer {
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveSubsystem m_drive = new DriveSubsystem();
   private final Joystick m_driveStick = new Joystick(0);
-  private final Joystick m_console = new Joystick(1);
+  private final ConsoleJoystick m_console = new ConsoleJoystick(1);
 
-  private final Command m_autoCommand = new AutoControl(m_drive);
+  private final Command m_autoCommand = new AutoControl(m_console, m_drive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

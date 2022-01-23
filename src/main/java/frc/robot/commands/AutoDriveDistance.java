@@ -10,15 +10,13 @@ import frc.robot.subsystems.DriveSubsystem;
 public class AutoDriveDistance extends CommandBase {
 
   private double m_dDistance;
-  private double m_dRotation;
   private boolean m_bIsDashboard;
   private DriveSubsystem m_drive;
   
   /** Creates a new AutoDriveDistance. */
-  public AutoDriveDistance(double distance, double rotation, DriveSubsystem drive) {
+  public AutoDriveDistance(double distance, DriveSubsystem drive) {
     m_drive = drive; 
     m_dDistance = distance;
-    m_dRotation = rotation;
     m_bIsDashboard = false;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);

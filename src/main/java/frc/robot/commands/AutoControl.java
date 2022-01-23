@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.wpilibj.DriverStation.getInstance;
+//import static edu.wpi.first.wpilibj.DriverStation.getInstance;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +10,6 @@ import frc.robot.libraries.AutonomousCommands;
 import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.libraries.Step;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.commands.Wait;
 
 public class AutoControl extends CommandBase {
     AutonomousCommands m_autoStepCommand;
@@ -31,17 +30,20 @@ public class AutoControl extends CommandBase {
     int m_waitCount;
 
     int m_stepIndex = 0;
-    Step m_step[] = { new Step("Drive", () -> true),
-                     new Step("wait", () -> true),
-                     new Step("Drive", () -> true), };
+    Step m_step[] = { new Step("Drive", () -> true)
+                    , new Step("wait", () -> true)
+                    , new Step("Drive", () -> true)
+    };
 
-    public AutoControl(DriveSubsystem drive) {
+    public AutoControl(ConsoleJoystick console, DriveSubsystem drive) {
+        m_console = console;
         m_drive = drive;
 
         m_autoStepCommand = new AutonomousCommands();
 
-        m_autoStepCommand.addOption("Drive", new AutoDriveDistance(1, 0, m_drive));
-        m_autoStepCommand.addOption("wait", new Wait(1));
+        m_autoStepCommand.addOption("Drive", new AutoDriveDistance(1, m_drive));
+        m_autoStepCommand.addOption("wait", new Wait(2));
+        m_autoStepCommand.addOption("WaitCount", new Wait(1, () -> m_console.getROT_SW_1()));
         m_autoStepCommand.addOption("End", new End());
     }
 
@@ -83,21 +85,21 @@ public class AutoControl extends CommandBase {
         return areWeThereYet;
     }
 
-public boolean stepNextCommand() {
-    boolean areWeThereYet = true;
+    public boolean stepNextCommand() {
+        boolean areWeThereYet = true;
 
-m_currentStepName = getNextActiveCommand();
-if (m_currentStepName == "End"){
-    areWeThereYet = true;
+        m_currentStepName = getNextActiveCommand();
+        if (m_currentStepName == "End") {
+            areWeThereYet = true;
 
-}else {
-   dashboardCmd(m_currentStepName);
-   switchCommand(m_autoStepCommand.getSelected(m_currentStepName));
-   areWeThereYet = false;
-}
+        } else {
+            dashboardCmd(m_currentStepName);
+            switchCommand(m_autoStepCommand.getSelected(m_currentStepName));
+            areWeThereYet = false;
+        }
 
-    return areWeThereYet;
-}
+        return areWeThereYet;
+    }
 
     private void switchCommand(final Command cmd) {
         m_currentCommand.end(false);
