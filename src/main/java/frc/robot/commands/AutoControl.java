@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.libraries.AutonomousCommands;
 import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.libraries.Step;
@@ -21,7 +22,7 @@ public class AutoControl extends CommandBase {
      * Shooter m_shooter;
      * Vision m_vision;
      */
-    Wait m_wait;
+    WaitForCount m_wait;
 
     int m_positionSwitch;
 
@@ -42,8 +43,8 @@ public class AutoControl extends CommandBase {
         m_autoStepCommand = new AutonomousCommands();
 
         m_autoStepCommand.addOption("Drive", new AutoDriveDistance(1, m_drive));
-        m_autoStepCommand.addOption("wait", new Wait(2));
-        m_autoStepCommand.addOption("WaitCount", new Wait(1, () -> m_console.getROT_SW_1()));
+        m_autoStepCommand.addOption("wait", new WaitCommand(2));
+        m_autoStepCommand.addOption("WaitCount", new WaitForCount(1, () -> m_console.getROT_SW_1()));
         m_autoStepCommand.addOption("End", new End());
     }
 
