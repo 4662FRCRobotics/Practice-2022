@@ -4,12 +4,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 //import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.motorcontrol.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,11 +23,11 @@ public class DriveSubsystem extends SubsystemBase {
   private CANSparkMax m_leftController2;
   private CANSparkMax m_rightController1;
   private CANSparkMax m_rightController2;
-  private SpeedControllerGroup m_leftControllerGroup;
-  private SpeedControllerGroup m_rightControllerGroup;
+  private MotorControllerGroup m_leftControllerGroup;
+  private MotorControllerGroup m_rightControllerGroup;
   private DifferentialDrive m_differentialdrive;
-  private CANEncoder m_leftEncoder1;
-  private CANEncoder m_rightEncoder1;
+  private RelativeEncoder m_leftEncoder1;
+  private RelativeEncoder m_rightEncoder1;
   // private AHRS m_gyroAndCollison;
   public PIDController m_drivePIDController;
   private double m_dDriveDistanceP;
@@ -81,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_leftController2.follow(m_leftController1);
     m_rightController2.follow(m_rightController1);
     m_differentialdrive= new DifferentialDrive(m_leftController1, m_rightController1);
-    m_rightController1.setInverted(DriveConstants.kIS_DRIVE_INVERTED);
+    m_rightController1.setInverted(!DriveConstants.kIS_DRIVE_INVERTED);
     m_leftController1.setInverted(DriveConstants.kIS_DRIVE_INVERTED);
 
     
