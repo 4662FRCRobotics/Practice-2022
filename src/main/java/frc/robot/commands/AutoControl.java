@@ -94,7 +94,6 @@ public class AutoControl extends CommandBase {
         m_currentStepName = getNextActiveCommand();
         if (m_currentStepName == "End") {
             areWeThereYet = true;
-
         } else {
             dashboardCmd(m_currentStepName);
             switchCommand(m_autoStepCommand.getSelected(m_currentStepName));
