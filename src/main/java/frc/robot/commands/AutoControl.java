@@ -43,6 +43,8 @@ public class AutoControl extends CommandBase {
         m_autoStepCommand = new AutonomousCommands();
 
         m_autoStepCommand.addOption("Drive", new AutoDriveDistance(1, m_drive));
+        m_autoStepCommand.addOption("Turn90", new AutoTurnAngle(90.0, m_drive));
+        m_autoStepCommand.addOption("Turn-90", new AutoTurnAngle(-90.0, m_drive));
         m_autoStepCommand.addOption("wait", new WaitCommand(2));
         m_autoStepCommand.addOption("WaitCount", new WaitForCount(1, () -> m_console.getROT_SW_1()));
         m_autoStepCommand.addOption("End", new End());
