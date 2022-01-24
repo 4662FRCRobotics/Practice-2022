@@ -11,6 +11,7 @@ import frc.robot.libraries.AutonomousCommands;
 import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.libraries.Step;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.libraries.AutoStepCommand;
 
 public class AutoControl extends CommandBase {
     AutonomousCommands m_autoStepCommand;
@@ -31,9 +32,9 @@ public class AutoControl extends CommandBase {
     int m_waitCount;
 
     int m_stepIndex = 0;
-    Step m_step[] = { new Step("Drive", () -> true)
-                    , new Step("wait", () -> true)
-                    , new Step("Drive", () -> true)
+    Step m_step[] = { new Step(AutoStepCommand.DRIVE1.name(), () -> true)
+                    , new Step(AutoStepCommand.WAIT2.name(), () -> true)
+                    , new Step(AutoStepCommand.DRIVE1.name(), () -> true)
     };
 
     public AutoControl(ConsoleJoystick console, DriveSubsystem drive) {
@@ -42,12 +43,12 @@ public class AutoControl extends CommandBase {
 
         m_autoStepCommand = new AutonomousCommands();
 
-        m_autoStepCommand.addOption("Drive", new AutoDriveDistance(1, m_drive));
-        m_autoStepCommand.addOption("Turn90", new AutoTurnAngle(90.0, m_drive));
-        m_autoStepCommand.addOption("Turn-90", new AutoTurnAngle(-90.0, m_drive));
-        m_autoStepCommand.addOption("wait", new WaitCommand(2));
-        m_autoStepCommand.addOption("WaitCount", new WaitForCount(1, () -> m_console.getROT_SW_1()));
-        m_autoStepCommand.addOption("End", new End());
+        m_autoStepCommand.addOption(AutoStepCommand.DRIVE1.name(), new AutoDriveDistance(1, m_drive));
+        m_autoStepCommand.addOption(AutoStepCommand.TURNP90.name(), new AutoTurnAngle(90.0, m_drive));
+        m_autoStepCommand.addOption(AutoStepCommand.TURNM90.name(), new AutoTurnAngle(-90.0, m_drive));
+        m_autoStepCommand.addOption(AutoStepCommand.WAIT2.name(), new WaitCommand(2));
+        m_autoStepCommand.addOption(AutoStepCommand.WAITLOOP.name(), new WaitForCount(1, () -> m_console.getROT_SW_1()));
+        m_autoStepCommand.addOption(AutoStepCommand.END.name(), new End());
     }
 
     private void dashboardCmd(String cmdName) {
@@ -92,7 +93,7 @@ public class AutoControl extends CommandBase {
         boolean areWeThereYet = true;
 
         m_currentStepName = getNextActiveCommand();
-        if (m_currentStepName == "End") {
+        if (m_currentStepName == AutoStepCommand.END.name()) {
             areWeThereYet = true;
         } else {
             dashboardCmd(m_currentStepName);
@@ -111,14 +112,14 @@ public class AutoControl extends CommandBase {
 
     private String getNextActiveCommand() {
 
-        System.out.println("gestNextActiveCommand");
+        System.out.println("getNextActiveCommand");
 
         String returnStepName = "";
 
         while (returnStepName == "") {
             m_stepIndex++;
             if (m_stepIndex >= m_step.length) {
-                returnStepName = "End";
+                returnStepName = AutoStepCommand.END.name();
             } else {
                 if (m_step[m_stepIndex].isTrue()) {
                     returnStepName = m_step[m_stepIndex].getName();
