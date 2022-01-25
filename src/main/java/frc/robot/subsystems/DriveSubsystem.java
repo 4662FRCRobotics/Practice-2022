@@ -97,11 +97,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     if (DriveConstants.kIS_DRIVE_INVERTED) {
       m_leftEncoderSign = 1;
-      m_rightEncoderSign = 1;
+      m_rightEncoderSign = -1;
       m_headingSign = 1;
     } else {
       m_leftEncoderSign = -1;
-      m_rightEncoderSign = -1;
+      m_rightEncoderSign = 1;
       m_headingSign = -1;
     }
 
@@ -128,6 +128,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("LeftEncdr:", getLeftDistance());
     SmartDashboard.putNumber("RightEncdr:", getRightDistance());
     SmartDashboard.putNumber("GyroYaw", getYaw());
+    SmartDashboard.putNumber("Distance", getDistance());
   }
 
   public void arcadeDrive(final double velocity, final double heading) {
@@ -135,7 +136,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getDistance() {
-    return (m_leftEncoder1.getPosition() - m_rightEncoder1.getPosition()) / 2;
+    return (m_leftEncoder1.getPosition() + m_rightEncoder1.getPosition()) / 2;
+    //return -(getLeftDistance() - getRightDistance());
   }
 
   private double getLeftDistance() {
@@ -188,13 +190,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_drivePIDController.setSetpoint(encoderDistance);
     resetEncoders();
     m_drivePIDController.reset();
-    // SmartDashboard.putNumber("EncoderDistance", encoderDistance);
+    SmartDashboard.putNumber("EncoderDistance", encoderDistance);
   }
 
   public void execDriveController() {
-    arcadeDrive(MathUtil.clamp(m_drivePIDController.calculate(getDistance()), -DriveConstants.kDRIVE_PID_LIMIT,
-        DriveConstants.kDRIVE_PID_LIMIT), 0);
-    // SmartDashboard.putNumber("GetDistance", getDistance());
+    double speed = MathUtil.clamp(m_drivePIDController.calculate(getDistance()), -DriveConstants.kDRIVE_PID_LIMIT,
+    DriveConstants.kDRIVE_PID_LIMIT);
+    arcadeDrive(speed, 0);
+    System.out.print(speed);
+    //SmartDashboard.putNumber("Speed", speed);
   }
 
   public void endDriveController() {

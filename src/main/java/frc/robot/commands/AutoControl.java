@@ -71,6 +71,7 @@ public class AutoControl extends CommandBase {
     @Override
     public void execute() {
         m_currentCommand.execute();
+        //System.out.println("execute");
     }
 
     @Override
@@ -86,6 +87,7 @@ public class AutoControl extends CommandBase {
         } else {
             areWeThereYet = stepNextCommand();
         }
+        //System.out.println("isFinished");
         return areWeThereYet;
     }
 
