@@ -131,8 +131,10 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Distance", getDistance());
   }
 
-  public void arcadeDrive(final double velocity, final double heading) {
+  public void arcadeDrive( double velocity, double heading) {
     m_differentialdrive.arcadeDrive(velocity, -1 * heading);
+    //System.out.println("velocity="+velocity);
+    //System.out.println("heading="+heading);
   }
 
   public double getDistance() {
@@ -197,7 +199,7 @@ public class DriveSubsystem extends SubsystemBase {
     double speed = MathUtil.clamp(m_drivePIDController.calculate(getDistance()), -DriveConstants.kDRIVE_PID_LIMIT,
     DriveConstants.kDRIVE_PID_LIMIT);
     arcadeDrive(speed, 0);
-    System.out.print(speed);
+    //System.out.println("speed="+speed);
     //SmartDashboard.putNumber("Speed", speed);
   }
 

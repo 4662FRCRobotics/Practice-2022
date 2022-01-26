@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.lang.module.ModuleDescriptor.Requires;
+
 //import static edu.wpi.first.wpilibj.DriverStation.getInstance;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,7 +34,7 @@ public class AutoControl extends CommandBase {
     int m_waitCount;
 
     int m_stepIndex = 0;
-    Step m_step[] = { new Step(AutoStepCommand.DRIVE1.name(), () -> true)
+    Step m_step[] = { new Step(AutoStepCommand.DRIVE1.name(), () -> m_console.getRawButton(2))
                     , new Step(AutoStepCommand.WAIT2.name(), () -> true)
                     , new Step(AutoStepCommand.DRIVE1.name(), () -> true)
     };
@@ -40,6 +42,7 @@ public class AutoControl extends CommandBase {
     public AutoControl(ConsoleJoystick console, DriveSubsystem drive) {
         m_console = console;
         m_drive = drive;
+        addRequirements(m_drive);
 
         m_autoStepCommand = new AutonomousCommands();
 
@@ -95,7 +98,7 @@ public class AutoControl extends CommandBase {
         boolean areWeThereYet = true;
 
         m_currentStepName = getNextActiveCommand();
-        if (m_currentStepName == AutoStepCommand.END.name()) {
+        if (m_currentStepName.equals( AutoStepCommand.END.name())) {
             areWeThereYet = true;
         } else {
             dashboardCmd(m_currentStepName);
