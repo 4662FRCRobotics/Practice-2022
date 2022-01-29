@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.math.MathUtil;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -37,6 +38,9 @@ public class DriveSubsystem extends SubsystemBase {
   public PIDController m_drivePIDController;
   private double m_dDriveDistanceP;
   private double m_dDriveDistanceI;
+  private double m_turnD;
+  private double m_turnP;
+  private double m_turnI;
   private double m_dDriveDistanceD;
   private double m_dDriveDistanceTolerance;
   private double m_dDistance;
@@ -113,12 +117,18 @@ public class DriveSubsystem extends SubsystemBase {
     m_drivePIDController = new PIDController(m_dDriveDistanceP, m_dDriveDistanceI, m_dDriveDistanceD);
     m_drivePIDController.setTolerance(m_dDriveDistanceTolerance);
 
+    m_turnP = Constants.DriveConstants.kTURN_ANGLE_P;
+    m_turnI = Constants.DriveConstants.kTURN_ANGLE_I;
+    m_turnD = Constants.DriveConstants.kTURN_ANGLE_D;
+
     m_gyroK = new AHRS(SerialPort.Port.kMXP);
-    m_turnPIDController = new PIDController(DriveConstants.kTURN_ANGLE_P, DriveConstants.kTURN_ANGLE_I,
-        DriveConstants.kTURN_ANGLE_D);
+    m_turnPIDController = new PIDController(m_turnP, m_turnI, m_turnD);
+
     m_turnPIDController.setTolerance(DriveConstants.kTURN_ANGLE_TOLERANCE,
         DriveConstants.kTURN_ANGLE_TOLERANCE_DEG_PER_S);
     m_dAngle = 0;
+
+    getDashboardTurn();
   }
 
   @Override
@@ -131,15 +141,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Distance", getDistance());
   }
 
-  public void arcadeDrive( double velocity, double heading) {
+  public void arcadeDrive(double velocity, double heading) {
     m_differentialdrive.arcadeDrive(velocity, -1 * heading);
-    //System.out.println("velocity="+velocity);
-    //System.out.println("heading="+heading);
+    // System.out.println("velocity="+velocity);
+    // System.out.println("heading="+heading);
   }
 
   public double getDistance() {
     return (m_leftEncoder1.getPosition() + m_rightEncoder1.getPosition()) / 2;
-    //return -(getLeftDistance() - getRightDistance());
+    // return -(getLeftDistance() - getRightDistance());
   }
 
   private double getLeftDistance() {
@@ -155,6 +165,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getAngleK() {
+
     return m_gyroK.getAngle();
   }
 
@@ -197,10 +208,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void execDriveController() {
     double speed = MathUtil.clamp(m_drivePIDController.calculate(getDistance()), -DriveConstants.kDRIVE_PID_LIMIT,
-    DriveConstants.kDRIVE_PID_LIMIT);
+        DriveConstants.kDRIVE_PID_LIMIT);
     arcadeDrive(speed, 0);
-    //System.out.println("speed="+speed);
-    //SmartDashboard.putNumber("Speed", speed);
+    // System.out.println("speed="+speed);
+    // SmartDashboard.putNumber("Speed", speed);
   }
 
   public void endDriveController() {
@@ -209,6 +220,26 @@ public class DriveSubsystem extends SubsystemBase {
 
   public boolean isDriveAtSetpoint() {
     return m_drivePIDController.atSetpoint();
+  }
+
+  public double getDashboardTurn() {
+
+    m_turnP = SmartDashboard.getNumber("turnP", m_turnP);
+    m_turnI = SmartDashboard.getNumber("turnI", m_turnI);
+    m_turnD = SmartDashboard.getNumber("turnD", m_turnD);
+    // m_dDriveDistanceTolerance =
+    // SmartDashboard.getNumber("DriveDistanceTolerance",
+    // m_dDriveDistanceTolerance);
+    m_dAngle = SmartDashboard.getNumber("turn angle", m_dAngle);
+    SmartDashboard.putNumber("turnP", m_turnP);
+    SmartDashboard.putNumber("turnI", m_turnI);
+    SmartDashboard.putNumber("turnD", m_turnD);
+    // SmartDashboard.putNumber("DriveDistanceTolerance",
+    // m_dDriveDistanceTolerance);
+    SmartDashboard.putNumber("turn angle", m_dAngle);
+    m_turnPIDController.setPID(m_turnP, m_turnI, m_turnD);
+
+    return m_dAngle;
   }
 
   public void initTurnController(DoubleSupplier targetAngle) {
@@ -221,7 +252,7 @@ public class DriveSubsystem extends SubsystemBase {
     // System.out.println("Drive exec turn controller");
     // System.out.println(MathUtil.clamp(m_turnPIDController.calculate(getAngleK()),
     // -1, 1));
-    arcadeDrive(0, MathUtil.clamp(m_turnPIDController.calculate(getAngleK()), -0.75, 0.75));
+    arcadeDrive(0, MathUtil.clamp(m_turnPIDController.calculate(getAngleK()), -DriveConstants.kTURN_PID_LIMIT, DriveConstants.kTURN_PID_LIMIT));
   }
 
   public void endTurnController() {

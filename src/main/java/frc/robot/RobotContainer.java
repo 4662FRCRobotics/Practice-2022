@@ -50,6 +50,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     SmartDashboard.putData("AutoDistance", new AutoDriveDistance(m_drive));
+    SmartDashboard.putData("AutoTurn", new AutoTurnAngle(()-> m_drive.getDashboardTurn(),m_drive));
   }
 
   /**

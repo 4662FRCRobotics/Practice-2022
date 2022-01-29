@@ -42,10 +42,10 @@ public final class Constants {
         public static final double kDRIVE_D = 0.0;
         public static final double kDRIVE_TOLERANCE = 2;
         public static final double kDRIVE_PID_LIMIT = 0.75;
-        
-        public static final double kTURN_ANGLE_P = 0.3;
+        public static final double kTURN_PID_LIMIT = 0.6;
+        public static final double kTURN_ANGLE_P = 0.33;
         public static final double kTURN_ANGLE_I = 0.0;
-        public static final double kTURN_ANGLE_D = 0.4;
+        public static final double kTURN_ANGLE_D = 0.41;
         public static final double kTURN_ANGLE_TOLERANCE = 1;
         public static final double kTURN_ANGLE_TOLERANCE_DEG_PER_S = 10;
         /*

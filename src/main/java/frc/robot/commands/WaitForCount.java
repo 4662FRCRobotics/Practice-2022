@@ -6,16 +6,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 
-public class WaitForCount extends CommandBase{
+public class WaitForCount extends CommandBase {
   protected Timer m_timer = new Timer();
   private final double m_duration;
   IntSupplier m_isWaitCount;
   int m_iWaitCount;
 
   /**
-  * Creates a variation on WPILIB WaitCommand. This command will do nothing, and end after the specified duration * count.
-  *
-  */
+   * Creates a variation on WPILIB WaitCommand. This command will do nothing, and
+   * end after the specified duration * count.
+   *
+   */
 
   public WaitForCount(double seconds, IntSupplier waitCount) {
     m_isWaitCount = waitCount;
@@ -35,10 +36,14 @@ public class WaitForCount extends CommandBase{
   public void end(boolean interrupted) {
     m_timer.stop();
   }
-  
+
   @Override
   public boolean isFinished() {
     boolean isTimeUp = m_timer.hasElapsed(m_duration);
+    if (m_iWaitCount < 0) {
+      isTimeUp = true;
+    }
+
     if (isTimeUp) {
       if (m_iWaitCount > 0) {
         isTimeUp = false;

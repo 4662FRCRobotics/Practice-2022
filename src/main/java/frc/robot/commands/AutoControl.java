@@ -34,9 +34,8 @@ public class AutoControl extends CommandBase {
     int m_waitCount;
 
     int m_stepIndex = 0;
-    Step m_step[] = { new Step(AutoStepCommand.DRIVE1.name(), () -> m_console.getRawButton(2))
-                    , new Step(AutoStepCommand.WAIT2.name(), () -> true)
-                    , new Step(AutoStepCommand.DRIVE1.name(), () -> true)
+    Step m_step[] = { new Step(AutoStepCommand.DRIVE1.name(), () -> true),
+            new Step(AutoStepCommand.WAITLOOP.name(), () -> true), new Step(AutoStepCommand.DRIVE1.name(), () -> true)
     };
 
     public AutoControl(ConsoleJoystick console, DriveSubsystem drive) {
@@ -50,7 +49,8 @@ public class AutoControl extends CommandBase {
         m_autoStepCommand.addOption(AutoStepCommand.TURNP90.name(), new AutoTurnAngle(90.0, m_drive));
         m_autoStepCommand.addOption(AutoStepCommand.TURNM90.name(), new AutoTurnAngle(-90.0, m_drive));
         m_autoStepCommand.addOption(AutoStepCommand.WAIT2.name(), new WaitCommand(2));
-        m_autoStepCommand.addOption(AutoStepCommand.WAITLOOP.name(), new WaitForCount(1, () -> m_console.getROT_SW_1()));
+        m_autoStepCommand.addOption(AutoStepCommand.WAITLOOP.name(),
+                new WaitForCount(1, () -> m_console.getROT_SW_1()));
         m_autoStepCommand.addOption(AutoStepCommand.END.name(), new End());
     }
 
@@ -74,7 +74,7 @@ public class AutoControl extends CommandBase {
     @Override
     public void execute() {
         m_currentCommand.execute();
-        //System.out.println("execute");
+        // System.out.println("execute");
     }
 
     @Override
@@ -90,7 +90,7 @@ public class AutoControl extends CommandBase {
         } else {
             areWeThereYet = stepNextCommand();
         }
-        //System.out.println("isFinished");
+        // System.out.println("isFinished");
         return areWeThereYet;
     }
 
@@ -98,14 +98,13 @@ public class AutoControl extends CommandBase {
         boolean areWeThereYet = true;
 
         m_currentStepName = getNextActiveCommand();
-        if (m_currentStepName.equals( AutoStepCommand.END.name())) {
+        if (m_currentStepName.equals(AutoStepCommand.END.name())) {
             areWeThereYet = true;
         } else {
-            dashboardCmd(m_currentStepName);
             switchCommand(m_autoStepCommand.getSelected(m_currentStepName));
             areWeThereYet = false;
         }
-
+        dashboardCmd(m_currentStepName);
         return areWeThereYet;
     }
 
@@ -117,7 +116,7 @@ public class AutoControl extends CommandBase {
 
     private String getNextActiveCommand() {
 
-        System.out.println("getNextActiveCommand");
+        // System.out.println("getNextActiveCommand");
 
         String returnStepName = "";
 
@@ -131,7 +130,7 @@ public class AutoControl extends CommandBase {
                 }
             }
         }
-        System.out.println(returnStepName);
+        // System.out.println(returnStepName);
         return returnStepName;
     }
 }
