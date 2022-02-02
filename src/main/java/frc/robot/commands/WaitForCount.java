@@ -11,6 +11,7 @@ public class WaitForCount extends CommandBase {
   private final double m_duration;
   IntSupplier m_isWaitCount;
   int m_iWaitCount;
+  
 
   /**
    * Creates a variation on WPILIB WaitCommand. This command will do nothing, and
