@@ -13,6 +13,7 @@ import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -60,10 +61,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     new JoystickButton(m_driveStick, 1)
-        .whenPressed(
+        .whenHeld(
+          new SequentialCommandGroup(
             new ParallelRaceGroup(
                 new WaitCommand(3),
-                new FindHub(m_vision)));
+                new FindHub(m_vision)),
+            new AutoTurnAngle(() -> m_vision.getYaw(), m_drive)
+                ));
+    // new ConditionalCommand(new shootCargo, new instantCommand() , () -> m_vision haveTarget()
+
     SmartDashboard.putData("AutoDistance", new AutoDriveDistance(m_drive));
     SmartDashboard.putData("AutoTurn", new AutoTurnAngle(() -> m_drive.getDashboardTurn(), m_drive));
   }

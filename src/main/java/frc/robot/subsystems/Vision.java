@@ -41,6 +41,7 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("targetfound", m_bhaveTarget);
     SmartDashboard.putNumber("targetyaw", getYaw());
+   // SmartDashboard.putNumber("targetpitch", getpitch());
   }
 
   public void enableHubTargeting() {
