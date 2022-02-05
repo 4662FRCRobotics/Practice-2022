@@ -43,8 +43,8 @@ public final class Constants {
         // public static final DifferentialDriveKinematics K_DRIVE_KINEMATICS = new
         // DifferentialDriveKinematics(kTRACK_WIDTH_M);
 
-        public static final int kSHIFT_UP = 3;
-        public static final int kSHIFT_DOWN = 2;
+        public static final int kSHIFT_UP = 1;
+        public static final int kSHIFT_DOWN = 0;
 
         public static final double kDRIVE_P = 0.3;
         public static final double kDRIVE_I = 0.0;
