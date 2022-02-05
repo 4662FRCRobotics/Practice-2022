@@ -18,9 +18,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants;
+import frc.robot.Constants.Common;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -47,6 +51,9 @@ public class DriveSubsystem extends SubsystemBase {
   private double m_leftEncoderSign;
   private double m_rightEncoderSign;
   private double m_headingSign;
+  private boolean m_bInHighGear;
+  private DoubleSolenoid m_gearShifter;
+  
 
   public PIDController m_turnPIDController;
   private double m_dAngle;
@@ -108,6 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
       m_rightEncoderSign = 1;
       m_headingSign = -1;
     }
+m_bInHighGear = false;
 
     m_dDriveDistanceP = DriveConstants.kDRIVE_P;
     m_dDriveDistanceI = DriveConstants.kDRIVE_I;
@@ -129,6 +137,8 @@ public class DriveSubsystem extends SubsystemBase {
     m_dAngle = 0;
 
     getDashboardTurn();
+
+    m_gearShifter = new DoubleSolenoid(Common.kPCM_PORT, PneumaticsModuleType.CTREPCM ,DriveConstants.kSHIFT_DOWN, DriveConstants.kSHIFT_UP);
   }
 
   @Override
@@ -145,6 +155,20 @@ public class DriveSubsystem extends SubsystemBase {
     m_differentialdrive.arcadeDrive(velocity, -1 * heading);
     // System.out.println("velocity="+velocity);
     // System.out.println("heading="+heading);
+  }
+
+  public void throttledArcadeDrive(double velocity, double heading, double throttle) {
+    if (throttle < 0) {
+      m_bInHighGear = true;
+velocity = velocity * ((1.0 - throttle) / 2.0);
+//velocity = velocity * (1.0 / (throttle + 1.0));
+    } else {
+      m_bInHighGear = false;
+      //velocity = velocity * ((1.0 - throttle) / 2.0);
+      velocity = velocity * (1.0 / (throttle + 1.0));
+    }
+SmartDashboard.putBoolean("InHighGear", m_bInHighGear);
+    arcadeDrive(velocity, heading);
   }
 
   public double getDistance() {
@@ -252,7 +276,8 @@ public class DriveSubsystem extends SubsystemBase {
     // System.out.println("Drive exec turn controller");
     // System.out.println(MathUtil.clamp(m_turnPIDController.calculate(getAngleK()),
     // -1, 1));
-    arcadeDrive(0, MathUtil.clamp(m_turnPIDController.calculate(getAngleK()), -DriveConstants.kTURN_PID_LIMIT, DriveConstants.kTURN_PID_LIMIT));
+    arcadeDrive(0, MathUtil.clamp(m_turnPIDController.calculate(getAngleK()), -DriveConstants.kTURN_PID_LIMIT,
+        DriveConstants.kTURN_PID_LIMIT));
   }
 
   public void endTurnController() {
@@ -262,5 +287,19 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean isTurnAtSetpoint() {
     return m_turnPIDController.atSetpoint();
   }
+
+  public void setShiftHigh() {
+    m_gearShifter.set(Value.kForward);
+    
+  }
+
+  public void setShiftLow() {
+    m_gearShifter.set(Value.kReverse);
+  }
+
+  public boolean isHighGear() {
+    return m_bInHighGear;
+  }
+  
 
 }

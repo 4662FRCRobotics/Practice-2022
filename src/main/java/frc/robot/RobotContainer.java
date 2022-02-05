@@ -37,7 +37,8 @@ public class RobotContainer {
       new ArcadeDrive(
         m_drive,
         () -> m_driveStick.getY(),
-        () -> m_driveStick.getTwist()
+        () -> m_driveStick.getTwist(),
+        () -> m_driveStick.getThrottle()
       )
     );
   }
@@ -52,6 +53,8 @@ public class RobotContainer {
     SmartDashboard.putData("AutoDistance", new AutoDriveDistance(m_drive));
     SmartDashboard.putData("AutoTurn", new AutoTurnAngle(()-> m_drive.getDashboardTurn(),m_drive));
   }
+
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

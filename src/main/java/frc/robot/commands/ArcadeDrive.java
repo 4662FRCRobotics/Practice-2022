@@ -14,12 +14,15 @@ public class ArcadeDrive extends CommandBase {
   private final DriveSubsystem m_drive;
   private final DoubleSupplier m_velocity;
   private final DoubleSupplier m_heading; 
+  private final DoubleSupplier m_throttle; 
 
-  public ArcadeDrive(DriveSubsystem subsystem, DoubleSupplier velocity, DoubleSupplier heading) {
+  public ArcadeDrive(DriveSubsystem subsystem, DoubleSupplier velocity, DoubleSupplier heading, DoubleSupplier throttle) {
 
     m_drive = subsystem;
     m_velocity = velocity;
     m_heading = heading;
+    m_throttle = throttle;
+
     addRequirements(m_drive);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -31,7 +34,8 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.arcadeDrive(m_velocity.getAsDouble(), m_heading.getAsDouble());
+    m_drive.throttledArcadeDrive(m_velocity.getAsDouble(), m_heading.getAsDouble(), m_throttle.getAsDouble());
+
   }
 
   // Called once the command ends or is interrupted.
