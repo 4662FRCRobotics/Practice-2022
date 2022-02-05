@@ -12,6 +12,8 @@ import frc.robot.commands.*;
 import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,6 +54,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     SmartDashboard.putData("AutoDistance", new AutoDriveDistance(m_drive));
     SmartDashboard.putData("AutoTurn", new AutoTurnAngle(()-> m_drive.getDashboardTurn(),m_drive));
+
+    new Trigger(m_drive::isHighGear)
+    .whenActive(new InstantCommand(m_drive::setShiftHigh, m_drive))
+    .whenInactive(new InstantCommand(m_drive::setShiftLow, m_drive)); 
+
   }
 
 
