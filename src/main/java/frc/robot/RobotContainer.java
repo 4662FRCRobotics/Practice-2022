@@ -54,11 +54,7 @@ public class RobotContainer {
         () -> m_driveStick.getThrottle()
       )
     );
-        new ArcadeDrive(
-            m_drive,
-            () -> m_driveStick.getY(),
-            () -> m_driveStick.getTwist(),
-            () -> m_driveStick.getThrottle());
+ 
   }
 
   /**
