@@ -17,6 +17,9 @@ import edu.wpi.first.math.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final class VisionConstants {
+        public static final int VISION_SAMPLE_COUNT = 5;
+    }
     public static final class DriveConstants {
         public static final int kLeftMotor1Port = 2;
         public static final int kLeftMotor2Port = 3;
@@ -48,6 +51,7 @@ public final class Constants {
         public static final double kTURN_ANGLE_D = 0.41;
         public static final double kTURN_ANGLE_TOLERANCE = 1;
         public static final double kTURN_ANGLE_TOLERANCE_DEG_PER_S = 10;
+    
         /*
         public static final double kKEEP_HEADING_P =  0.2;
 		public static final double kKEEP_HEADING_I =  0.0;
