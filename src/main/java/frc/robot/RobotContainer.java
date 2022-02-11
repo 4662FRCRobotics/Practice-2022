@@ -13,6 +13,10 @@ import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
@@ -53,7 +57,8 @@ public class RobotContainer {
         new ArcadeDrive(
             m_drive,
             () -> m_driveStick.getY(),
-            () -> m_driveStick.getTwist()));
+            () -> m_driveStick.getTwist(),
+            () -> m_driveStick.getThrottle());
   }
 
   /**
