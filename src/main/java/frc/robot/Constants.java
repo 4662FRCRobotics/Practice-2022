@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -17,9 +18,16 @@ import edu.wpi.first.math.util.Units;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final class Common {
+        public static final int kPCM_PORT = 1;
+    }
+
+
     public static final class VisionConstants {
         public static final int VISION_SAMPLE_COUNT = 5;
     }
+
     public static final class DriveConstants {
         public static final int kLeftMotor1Port = 2;
         public static final int kLeftMotor2Port = 3;
@@ -30,15 +38,19 @@ public final class Constants {
         public static final double kRAMP_RATE = 1.0;
         public static final int kCURRENT_LIMT = 40;
 
-        public static final double kGEARBOX_REDUCTION = (50.0/12.0) * (60.0/14.0);
+        public static final double kGEARBOX_REDUCTION = (50.0 / 12.0) * (60.0 / 14.0);
         public static final double kTIRE_SIZE_IN = 7.9;
         public static final double kTIRE_SIZE_M = Units.inchesToMeters(kTIRE_SIZE_IN);
         public static final int kPULSE_PER_ROTATION = 1;
-        public static final double kENCODER_DISTANCE_PER_PULSE_M = ((double) kPULSE_PER_ROTATION / kGEARBOX_REDUCTION) * (kTIRE_SIZE_M * Math.PI);
+        public static final double kENCODER_DISTANCE_PER_PULSE_M = ((double) kPULSE_PER_ROTATION / kGEARBOX_REDUCTION)
+                * (kTIRE_SIZE_M * Math.PI);
         public static final double kTRACK_WIDTH_M = 0.64;
 
-        //public static final DifferentialDriveKinematics K_DRIVE_KINEMATICS = new DifferentialDriveKinematics(kTRACK_WIDTH_M);
-        
+        // public static final DifferentialDriveKinematics K_DRIVE_KINEMATICS = new
+        // DifferentialDriveKinematics(kTRACK_WIDTH_M);
+
+        public static final int kSHIFT_UP = 1;
+        public static final int kSHIFT_DOWN = 0;
 
         public static final double kDRIVE_P = 0.3;
         public static final double kDRIVE_I = 0.0;
@@ -53,11 +65,11 @@ public final class Constants {
         public static final double kTURN_ANGLE_TOLERANCE_DEG_PER_S = 10;
     
         /*
-        public static final double kKEEP_HEADING_P =  0.2;
-		public static final double kKEEP_HEADING_I =  0.0;
-		public static final double kKEEP_HEADING_D = 0.4;
-        public static final double kKEEP_HEADING_TOLERANCE =  1;
-        */
+         * public static final double kKEEP_HEADING_P = 0.2;
+         * public static final double kKEEP_HEADING_I = 0.0;
+         * public static final double kKEEP_HEADING_D = 0.4;
+         * public static final double kKEEP_HEADING_TOLERANCE = 1;
+         */
     }
-    
+
 }

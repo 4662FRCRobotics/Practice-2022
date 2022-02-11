@@ -12,10 +12,9 @@ import frc.robot.commands.*;
 import frc.robot.libraries.ConsoleJoystick;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -44,6 +43,13 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_drive.setDefaultCommand(
+      new ArcadeDrive(
+        m_drive,
+        () -> m_driveStick.getY(),
+        () -> m_driveStick.getTwist(),
+        () -> m_driveStick.getThrottle()
+      )
+    );
         new ArcadeDrive(
             m_drive,
             () -> m_driveStick.getY(),
@@ -71,8 +77,16 @@ public class RobotContainer {
     // new ConditionalCommand(new shootCargo, new instantCommand() , () -> m_vision haveTarget()
 
     SmartDashboard.putData("AutoDistance", new AutoDriveDistance(m_drive));
-    SmartDashboard.putData("AutoTurn", new AutoTurnAngle(() -> m_drive.getDashboardTurn(), m_drive));
+    SmartDashboard.putData("AutoTurn", new AutoTurnAngle(()-> m_drive.getDashboardTurn(),m_drive));
+
+    new Trigger(m_drive::isHighGear)
+    .whenActive(new InstantCommand(m_drive::setShiftHigh, m_drive))
+    .whenInactive(new InstantCommand(m_drive::setShiftLow, m_drive)); 
+
+
   }
+
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
